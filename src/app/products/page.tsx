@@ -1,10 +1,10 @@
 "use client";
-import Loader from "@/components/Loader";
 import { cartListActions } from "@/slices/cartReducer";
 import { useAppDispatch } from "@/store/hook";
+import { error } from "console";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState,useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 interface Product {
   id: number;
@@ -13,13 +13,9 @@ interface Product {
   image: string;
   quantity: number;
   description: string;
-  category:string;
 }
-
 function Products() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [productList, setProductList] = useState<Product[]>([]);
-  const [search,setSearch]=useState('')
   const dispatch = useAppDispatch();
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -37,24 +33,12 @@ function Products() {
       dispatch(cartListActions.updateCart(item));
     });
   };
-  useEffect(()=>{
-    setProductList(products?.filter((el:Product)=>search===''?el:el?.category?.includes(search)))
-  },[search,products])
-  if (products?.length === 0) {
-    return (
-      <div className="h-screen ">
-        <Loader />
-      </div>
-    );
-  }
+
   return (
-    <div className="flex flex-col gap-12 p-4">
-    <div className="flex justify-between items-center">
-      <input value={search} onChange={e=>setSearch(e?.target?.value)} type="search" className="border-[1px] outline-none border-black px-2 w-[22rem] text-lg h-10 rounded-2xl" placeholder="Search for category"/>
-      <p className="text-3xl animate-bounce">Purchase Your Product Here</p>
-      </div>
-      <div className="flex flex-wrap justify-center gap-12">
-        {productList?.map((item: Product) => (
+    <div className="p-4">
+      <p className="text-3xl">All Products</p>
+      <div className="flex flex-wrap justify-between gap-4">
+        {products?.map((item: Product) => (
           <div key={item?.id} className="w-56">
             <Link
               href={`/products/${item?.id}`}
