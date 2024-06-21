@@ -7,11 +7,11 @@ body {
 @tailwind components;
 @tailwind utilities;
 
+/* scrollbar styling */
 ::-webkit-scrollbar {
   width: 4px;
   height: 2px;
 }
-
 /* Customize scrollbar thumb */
 ::-webkit-scrollbar-thumb {
   background: lightgray;
